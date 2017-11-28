@@ -1,0 +1,9 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "jQuery": "3.2.1",
+    "requirejs": "2.3.5",
+    "knockout": "v3.4.2" 
+  }
+}

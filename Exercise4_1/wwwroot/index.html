@@ -1,0 +1,16 @@
+﻿<html>
+<body>
+<h1 data-bind="text: title"></h1>
+
+<input data-bind="textInput: firstName"/>
+<input data-bind="textInput:lastName"/>
+<button data-bind="click: addName">Add Name</button>
+<div data-bind="text: fullName"></div>
+
+<ul data-bind="foreach: names">
+    <li data-bind="text: $data"></li>
+</ul>
+        
+<script data-main="js/main.js" src="js/lib/requirejs/require.js"></script>
+</body>
+</html>
