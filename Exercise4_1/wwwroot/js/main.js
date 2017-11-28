@@ -7,30 +7,27 @@ require.config({
 });
 
 require(["knockout", "jQuery"], function(ko, jQuery) {
-
     (function () {
 
+        var lol = $.getJSON("http://localhost:64167/api/posts", function(data) {
+            console.log(data);
+            $("#data").text(JSON.stringify(data.items));
+        });
+
         var vm = {
-            title: ko.observable("Hello from Knockout"),
-            firstName: ko.observable("Peter"),
-            lastName: ko.observable("Smith"),
-            names: ko.observableArray(["peter", "joe"]),
 
-            changeTitle: function () {
-                console.log(this.title);
-                this.title("Changed");
-            },
-
-            addName: function (name) {
-                this.names.push(name.fullName());
-                this.firstName("");
-                this.lastName("");
-            }
+        posts: ko.observableArray([]),
+                    
         };
 
-        vm.fullName = ko.computed(function () {
-            return this.firstName() + " " + this.lastName();
+
+        vm.posts = ko.computed(function() {
+            return $.getJSON("http://localhost:64167/api/posts", function(data) 
+            {
+                return (JSON.stringify(data.items));
+            });
         }, vm);
+
 
         ko.applyBindings(vm);
 
