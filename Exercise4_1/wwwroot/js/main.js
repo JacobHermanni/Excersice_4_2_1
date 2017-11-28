@@ -9,27 +9,35 @@ require.config({
 require(["knockout", "jQuery"], function(ko, jQuery) {
     (function () {
 
-        var lol = $.getJSON("http://localhost:64167/api/posts", function(data) {
-            console.log(data);
-            $("#data").text(JSON.stringify(data.items));
-        });
+         function DataService() {
 
-        var vm = {
-
-        posts: ko.observableArray([]),
-                    
-        };
-
-
-        vm.posts = ko.computed(function() {
-            return $.getJSON("http://localhost:64167/api/posts", function(data) 
-            {
-                return (JSON.stringify(data.items));
-            });
-        }, vm);
+            this.getPosts = function(callback) {
+                $.getJSON(window.location.href + "api/posts", function(data) {
+                    console.log("getposts", data);
+                    callback(data);
+                });
+            }
+         }
 
 
-        ko.applyBindings(vm);
+         var vm = {
+
+            dataService: new DataService(),
+            posts: ko.observableArray([]),
+
+            search: function() {
+                this.dataService.getPosts(data => {
+                    for (i = 0; i < data.items.length; i++) {
+                        this.posts.push(data.items[i]);
+                    }
+                });
+            }
+
+
+         };
+
+
+         ko.applyBindings(vm);
 
 
     })();
