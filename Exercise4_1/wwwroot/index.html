@@ -5,7 +5,12 @@
     <button data-bind="click: search">Search for posts</button>
 
     <ul data-bind="foreach: posts">
-        <li data-bind="text: $data.title"></li>
+        <!--<li data-bind="text: $data.title"></li>-->
+        <li>
+            <a data-bind="attr: { href: $data.link }, text: $data.title"></a>
+        </li>
+
+
     </ul>
 
     <button data-bind="click: prevPage, enable: displayPrev">Prev</button>
