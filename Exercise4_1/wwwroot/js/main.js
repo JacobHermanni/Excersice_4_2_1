@@ -17,7 +17,7 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
          function DataService() {
 
             this.getPosts = function(callback) {
-                $.getJSON("http://localhost:64167/" + "api/posts", function(data) {
+                $.getJSON(window.location + "api/posts", function(data) {
                     console.log("GetPosts Data:", data);
                     callback(data);
                 });
@@ -29,6 +29,24 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
                     callback(data);
                 });
             }
+
+            // ------------ Denne funktion kan ikke kaldes?? har derfor lavet den inde i den fornødne funktion: ------------ //
+            this.getPost = function(url, callback) {
+                $.getJSON(url, function(data) {
+                    console.log("specific post:", data);
+                    callback(data);
+                });
+            }
+
+
+         }
+
+
+         getPost = function (url, callback){
+            $.getJSON(url, function(data) {
+                console.log("specific post:", data);
+                callback(data);
+            });
          }
 
 
@@ -40,7 +58,9 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
             next: ko.string,
             displayPrev: ko.observable(false),
             displayNext: ko.observable(false),
+            selectedTemplate: ko.observable(),
 
+            // ------------ Search Function: ------------ //
             search: function() {
                 this.dataService.getPosts(data => {
                     this.posts.removeAll();
@@ -52,6 +72,12 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
                     this.navPage();
                 });
 
+            },
+
+            // ------------ Page Navigation: ------------ //
+            navPage: function(data) {
+                this.next === null ? this.displayNext(false) : this.displayNext(true);
+                this.prev === null ? this.displayPrev(false) : this.displayPrev(true);
             },
 
             nextPage: function() {
@@ -79,13 +105,45 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
                 });
             },
 
-            navPage: function() {
-                this.next === null ? this.displayNext(false) : this.displayNext(true);
-                this.prev === null ? this.displayPrev(false) : this.displayPrev(true);
-            }
+            postTitle: ko.observable(),
+            creationDate: ko.observable(),
+            score: ko.observable(),
+            body: ko.observable(),
+            answes: ko.observable(),
 
+
+            // ------------ Get individual post: ------------ //
+            getPost: function() {
+                console.log("clicked post with link:", this.link);
+
+
+                getPost(this.link, data => {
+                    this.navPage();
+                });
+
+                this.dataService.getPost(this.link, data => {
+                    this.navPage();
+                });
+
+
+            },
+
+            // ------------ Template switching: ------------ //
+            template: ko.observable("posts-template"),
+
+            getTemplate: function(data) {
+                return data.template();
+            },
+
+            toggle: function() {
+                this.template(this.template() === "posts-template" ? "post-template" : "posts-template");    
+            }
+           
 
          };
+
+
+
 
 
          ko.applyBindings(vm);

@@ -2,14 +2,15 @@
 <body>
     <h1> Exercise 4.2.1</h1>
 
-    <div data-bind="template: { name: 'posts-template'}"></div>
+    <!--<div data-bind="template: { name: 'posts-template'}"></div>
+    <div data-bind="template: { name: 'post-template' }"></div>-->
 
 
+    <h1> Herunder arbejdes:</h1>
 
 
-
-
-
+    <div data-bind="template: { name: getTemplate }"></div>
+    <button data-bind="click: toggle">Toggle</button>
 
 
 
@@ -24,11 +25,23 @@
         <ul data-bind="foreach: posts">
             <li>
                 <a data-bind="attr: { href: $data.link }, text: $data.title"></a>
+                <button data-bind="click: $parent.getPost">Read post</button>
             </li>
         </ul>
         <button data-bind="click: prevPage, enable: displayPrev">Prev</button>
         <button data-bind="click: nextPage, enable: displayNext">Next</button>
     </script>
+
+
+    <script type="text/html" id="post-template">
+        <h1 data-bind="text: postTitle"></h1>
+        <h3> Creation Date</h3>
+        <b> Score </b>
+        <div> Body bla bla</div>
+        <p> Link to answers</p>
+    </script>
+
+
 
 
 
