@@ -14,6 +14,9 @@ function test() {
 require(["knockout", "jQuery"], function(ko, jQuery) {
     (function () {
 
+
+         self = this;
+
          function DataService() {
 
             this.getPosts = function(callback) {
@@ -33,20 +36,12 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
             // ------------ Denne funktion kan ikke kaldes?? har derfor lavet den inde i den fornødne funktion: ------------ //
             this.getPost = function(url, callback) {
                 $.getJSON(url, function(data) {
-                    console.log("specific post:", data);
+                    console.log("specific post inside:", data);
                     callback(data);
                 });
             }
 
 
-         }
-
-
-         getPost = function (url, callback){
-            $.getJSON(url, function(data) {
-                console.log("specific post:", data);
-                callback(data);
-            });
          }
 
 
@@ -94,8 +89,8 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
             },
 
             prevPage: function() {
+                console.log("pressed prev");
                 this.dataService.changePage(this.prev, data => {
-                    this.posts.removeAll();
                     for (i = 0; i < data.items.length; i++) {
                         this.posts.push(data.items[i]);
                     }
@@ -109,24 +104,42 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
             creationDate: ko.observable(),
             score: ko.observable(),
             body: ko.observable(),
-            answes: ko.observable(),
+            answersLink: ko.observable(),
 
 
             // ------------ Get individual post: ------------ //
             getPost: function() {
                 console.log("clicked post with link:", this.link);
-
-
-                getPost(this.link, data => {
-                    this.navPage();
-                });
-
-                this.dataService.getPost(this.link, data => {
-                    this.navPage();
-                });
-
-
+                vm.format(this.link);
             },
+
+            format: function(url) {
+                this.dataService.getPost(url, data => {
+                    this.postTitle(data.title);
+                    this.creationDate(data.creationDate);
+                    this.score(data.score);
+                    this.body(data.body);
+                    this.answersLink(data.answers);
+                    console.log("fra format - dataService - getpost:", data);
+                    this.toggle();
+                    this.getAnswers(data.answers);
+                });
+            },
+
+            answers: ko.observableArray([]),
+
+            getAnswers: function(url) {
+                console.log("Answers", url);
+                this.dataService.getPost(url, data => {
+                    console.log("fra getANSWERS:::", data);
+                    for (i = 0; i < data.length; i++) {
+                        this.answers.push(data[i]);
+                        console.log(data[i]);
+                    }
+
+                });
+            },
+
 
             // ------------ Template switching: ------------ //
             template: ko.observable("posts-template"),
