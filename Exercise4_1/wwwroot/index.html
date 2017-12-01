@@ -1,15 +1,11 @@
 ﻿<html>
 <body>
+    <button data-bind="click: toggle">Toggle Template</button>
+    <button data-bind="click: switchComponent">Switch Component</button>
     <h1> Exercise 4.2.1</h1>
 
-    <!--<div data-bind="template: { name: 'posts-template'}"></div>
-    <div data-bind="template: { name: 'post-template' }"></div>-->
 
     <div data-bind="template: { name: getTemplate }"></div>
-    <button data-bind="click: toggle">Toggle</button>
-
-
-
 
     <script type="text/html" id="posts-template">
         <button data-bind="click: search">Search for posts</button>
@@ -42,6 +38,8 @@
 
     <h1>Herunder arbejdes:</h1>
 
+
+    <div data-bind="component: {name: currentView, params: currentParams}"></div>
 
 
     <!--<all-posts></all-posts>-->

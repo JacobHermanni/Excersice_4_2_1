@@ -12,5 +12,7 @@
     <Folder Include="wwwroot\js\components\" />
     <Folder Include="wwwroot\js\services\" />
     <Folder Include="wwwroot\js\components\posts\" />
+    <Folder Include="wwwroot\js\components\singlePost\" />
+    <Folder Include="wwwroot\js\services\" />
   </ItemGroup>
 </Project>

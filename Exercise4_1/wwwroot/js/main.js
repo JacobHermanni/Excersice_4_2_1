@@ -3,7 +3,8 @@ require.config({
     paths: {
         "jQuery": "lib/jQuery/dist/jquery.min",
         "knockout": "lib/knockout/dist/knockout",
-        "text": "lib/text/text"
+        "text": "lib/text/text",
+        "broadcaster": "services/broadcaster"
     }
 });
 
@@ -18,11 +19,16 @@ require(['knockout'], function (ko) {
         template: { require: "text!components/posts/posts_view.html"}
     });
 
+    ko.components.register("single-post", {
+        viewModel: { require: "components/singlePost/single-post" },
+        template: { require: "text!components/singlePost/single-post_view.html"}
+    });
+
 
 });
 
 
-require(["knockout", "jQuery"], function(ko, jQuery) {
+require(["knockout", "jQuery", "broadcaster"], function(ko, jQuery, broadcaster) {
     (function () {
 
          fetchData = function(url, callback) {
@@ -38,7 +44,6 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
             var next = ko.string;
             var displayPrev = ko.observable(false);
             var displayNext = ko.observable(false);
-            var selectedTemplate = ko.observable("");
 
             // ------------ Search Function: ------------ //
             var search = function() {
@@ -130,13 +135,30 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
                 template(template() === "posts-template" ? "post-template" : "posts-template");    
             }
 
+            var currentView = ko.observable('all-posts');
+            var currentParams = ko.observable({});
+
+            var switchComponent = function() {
+                if (currentView() === "all-posts") {
+                    currentView("single-post");
+                } else {
+                    currentView("all-posts");
+                }
+
+            }
+
+            broadcaster.subscribe(broadcaster.events.changeView,
+            viewName => {
+                currentView(viewName);
+                currentParams({name: "hello"});
+            });
+
             return {
                 posts,
                 prev,
                 next,
                 displayPrev,
                 displayNext,
-                selectedTemplate,
                 template,
                 search,
                 getTemplate,
@@ -150,7 +172,10 @@ require(["knockout", "jQuery"], function(ko, jQuery) {
                 postTitle,
                 creationDate,
                 score,
-                body
+                body,
+                currentView,
+                switchComponent,
+                currentParams
             }
 
           })();
