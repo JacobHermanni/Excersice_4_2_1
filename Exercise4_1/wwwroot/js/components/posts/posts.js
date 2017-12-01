@@ -8,9 +8,9 @@
                 });
              }
 
-             var testFUCK = function() {
-                broadcaster.publish(broadcaster.events.changeView, "single-post");
-                console.log("triggered");
+             var testFUCK = function(data) {
+                broadcaster.publish(broadcaster.events.changeView, "single-post", data);
+                console.log("triggered trest", data);
              };
 
             var posts = ko.observableArray([]);
@@ -69,7 +69,7 @@
             var getPost = function() {
                 
                 console.log("clicked single post with link", this.link);
-                testFUCK();
+                testFUCK(this);
             }
 
             return {

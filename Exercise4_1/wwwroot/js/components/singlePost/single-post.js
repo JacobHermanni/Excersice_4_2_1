@@ -1,7 +1,7 @@
 ﻿define(['knockout'], function(ko) {
     return function (params) {
 
-        console.log("params fra singlepost:", params.value);
+        console.log("params fra singlepost:", params);
 
         fetchData = function(url, callback) {
             $.getJSON(url, function(data) {

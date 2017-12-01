@@ -136,7 +136,7 @@ require(["knockout", "jQuery", "broadcaster"], function(ko, jQuery, broadcaster)
             }
 
             var currentView = ko.observable('all-posts');
-            var currentParams = ko.observable({});
+            var currentParams = ko.observable("");
 
             var switchComponent = function() {
                 if (currentView() === "all-posts") {
@@ -150,7 +150,9 @@ require(["knockout", "jQuery", "broadcaster"], function(ko, jQuery, broadcaster)
             broadcaster.subscribe(broadcaster.events.changeView,
             viewName => {
                 currentView(viewName);
-                currentParams({name: "hello"});
+                console.log("what is this:", viewName);
+                currentParams("test currentParams");
+                console.log("fsdælasdælsakdæl", currentParams());
             });
 
             return {
