@@ -1,11 +1,11 @@
-﻿define(['knockout'], function (ko) {
+﻿define(['knockout', 'broadcaster'], function (ko, bc) {
     return function (params) {
 
         console.log("params fra singlepost:", params);
 
         fetchData = function (url, callback) {
             $.getJSON(url, function (data) {
-                console.log("fetched Data single-post:", data);
+                //console.log("fetched Data single-post:", data);
                 callback(data);
 
             });
@@ -31,16 +31,19 @@
         getQuestion(params.link);
 
         var getAnswers = function (url) {
-            console.log("Answers", url);
+            //console.log("Answers", url);
             fetchData(url, data => {
-                console.log("fra getANSWERS:::", data);
+                //console.log("fra getANSWERS:::", data);
                 for (i = 0; i < data.length; i++) {
                     answers.push(data[i]);
-                    console.log(data[i]);
+                    //console.log(data[i]);
                 }
             });
         }
 
+        var back = function() {
+            bc.publish(bc.events.changeView, { name: "all-posts"});
+        }
 
         return {
             getQuestion,
@@ -49,7 +52,8 @@
             postTitle,
             creationDate,
             score,
-            body
+            body,
+            back
         };
 
     }

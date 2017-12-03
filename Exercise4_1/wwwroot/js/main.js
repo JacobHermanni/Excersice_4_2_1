@@ -41,7 +41,7 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
         var vm = (function () {
 
             var currentView = ko.observable('all-posts');
-            var currentParams = ko.observable("");
+            var currentParams = ko.observable(null);
 
             var switchComponent = function () {
                 if (currentView() === "all-posts") {
@@ -52,17 +52,27 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
 
             }
 
+            var currentState = {};
+
             broadcaster.subscribe(broadcaster.events.changeView,
                 viewInfo => {
-                    console.log(viewInfo);
-                    currentParams(viewInfo.data);
+                    console.log("viewinfo from main", viewInfo);
                     currentView(viewInfo.name);
+
+                    // if there is no data, it means single-post is switching view to all-posts and state is relevant. Else the data is for single-post.
+                    if (viewInfo.data !== undefined) {
+                        currentParams(viewInfo.data);
+                        currentState = viewInfo.state;
+                    } else {
+                        currentParams(currentState);
+                    }
                 });
 
             return {
                 currentView,
                 switchComponent,
-                currentParams
+                currentParams,
+                currentState
             }
 
         })();
