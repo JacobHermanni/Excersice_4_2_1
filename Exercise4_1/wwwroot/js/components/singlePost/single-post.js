@@ -1,4 +1,4 @@
-﻿define(['knockout'], function (ko) {
+﻿define(['knockout', 'broadcaster'], function (ko, bc) {
     return function (params) {
 
         console.log("params fra singlepost:", params);
@@ -41,6 +41,9 @@
             });
         }
 
+        var back = function() {
+            bc.publish(bc.events.changeView, { name: "all-posts"});
+        }
 
         return {
             getQuestion,
@@ -49,7 +52,8 @@
             postTitle,
             creationDate,
             score,
-            body
+            body,
+            back
         };
 
     }
