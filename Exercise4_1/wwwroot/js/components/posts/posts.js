@@ -8,11 +8,6 @@
                 });
              }
 
-             var testFUCK = function(data) {
-                broadcaster.publish(broadcaster.events.changeView, "single-post", data);
-                console.log("triggered trest", data);
-             };
-
             var posts = ko.observableArray([]);
             var prev = ko.string;
             var next = ko.string;
@@ -67,9 +62,7 @@
 
             // ------------ Get individual post: ------------ //
             var getPost = function() {
-                
-                console.log("clicked single post with link", this.link);
-                testFUCK(this);
+                broadcaster.publish(broadcaster.events.changeView, { name: "single-post", data: this });
             }
 
             return {
@@ -82,8 +75,7 @@
                 nextPage,
                 prevPage,
                 navPage,
-                getPost,
-                testFUCK
+                getPost
             };
 
     }
